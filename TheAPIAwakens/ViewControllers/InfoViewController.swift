@@ -51,6 +51,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         updateTitle()
         updateHeadings()
         
+        // Updates the name title so it is the first object in the picker view
         nameTitle.text = data[0]
         
     }
@@ -97,6 +98,25 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             heading4.text = "Class"
             heading5.text = "Crew"
         }
+    }
+    
+    func updateLabels(with vehicle: Vehicle ){
+        nameTitle.text = vehicle.name
+        infoLabel1.text = vehicle.manufacturer
+        infoLabel2.text = vehicle.costInCredits
+        infoLabel3.text = vehicle.length
+        infoLabel4.text = vehicle.starshipClass
+        infoLabel5.text = vehicle.crew
+    }
+
+    
+    func updateLabels(with person: Person){
+        nameTitle.text = person.name
+        infoLabel1.text = person.birthYear
+        infoLabel2.text = person.homeworld
+        infoLabel3.text = person.height
+        infoLabel4.text = person.eyeColor
+        infoLabel5.text = person.hairColor
     }
     
     

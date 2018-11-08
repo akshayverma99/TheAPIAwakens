@@ -14,9 +14,13 @@ enum selection{
     case starships 
 }
 
+protocol database {
+    func getDatabaseType() -> databaseType
+}
+
 // JSON Objects
 
-struct person: Codable{
+struct Person: Codable{
     let name: String
     let birthYear: String
     let height: String
@@ -35,3 +39,8 @@ struct Vehicle: Codable{
     let starshipClass: String
     let crew: String
 }
+
+typealias databaseType = selection
+typealias Starship = Vehicle
+
+

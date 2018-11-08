@@ -14,6 +14,8 @@
 		4F17B98E218B916E00B63229 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F17B98C218B916E00B63229 /* LaunchScreen.storyboard */; };
 		4F17B996218D1D9500B63229 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F17B995218D1D9500B63229 /* InfoViewController.swift */; };
 		4F17B999218EA07100B63229 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F17B998218EA07100B63229 /* DataStructures.swift */; };
+		4FDC36C12194F14600EDE6F0 /* UrlCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC36C02194F14600EDE6F0 /* UrlCreator.swift */; };
+		4FDC36C42194FB5800EDE6F0 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC36C32194FB5800EDE6F0 /* NetworkingManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		4F17B98F218B916F00B63229 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F17B995218D1D9500B63229 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		4F17B998218EA07100B63229 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
+		4FDC36C02194F14600EDE6F0 /* UrlCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCreator.swift; sourceTree = "<group>"; };
+		4FDC36C32194FB5800EDE6F0 /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,7 @@
 				4F17B983218B916800B63229 /* AppDelegate.swift */,
 				4F17B998218EA07100B63229 /* DataStructures.swift */,
 				4F17B997218E4DFB00B63229 /* ViewControllers */,
+				4FDC36C22194F8A200EDE6F0 /* Networking */,
 				4F17B987218B916800B63229 /* Main.storyboard */,
 				4F17B98A218B916E00B63229 /* Assets.xcassets */,
 				4F17B98C218B916E00B63229 /* LaunchScreen.storyboard */,
@@ -76,6 +81,15 @@
 				4F17B995218D1D9500B63229 /* InfoViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		4FDC36C22194F8A200EDE6F0 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				4FDC36C02194F14600EDE6F0 /* UrlCreator.swift */,
+				4FDC36C32194FB5800EDE6F0 /* NetworkingManager.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,7 +164,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F17B986218B916800B63229 /* ViewController.swift in Sources */,
+				4FDC36C12194F14600EDE6F0 /* UrlCreator.swift in Sources */,
 				4F17B999218EA07100B63229 /* DataStructures.swift in Sources */,
+				4FDC36C42194FB5800EDE6F0 /* NetworkingManager.swift in Sources */,
 				4F17B996218D1D9500B63229 /* InfoViewController.swift in Sources */,
 				4F17B984218B916800B63229 /* AppDelegate.swift in Sources */,
 			);
