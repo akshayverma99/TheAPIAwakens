@@ -9,7 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    var currentSelection: selection?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -17,28 +19,28 @@ class ViewController: UIViewController {
         
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func segue(_ sender: UIButton) {
         switch sender.tag{
-            case 1,2,3: performSegue(withIdentifier: "shift", sender: nil)
-            default: print("testicles")
+        case 1: currentSelection = .characters
+        case 2: currentSelection = .vehicles
+        case 3: currentSelection = .starships
+        default: fatalError()
         }
+        
+        performSegue(withIdentifier: "shift", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let button = sender as? UIButton else {  return  }
+        guard let selection = currentSelection else {  return  }
+        guard let viewController = segue.destination as? InfoViewController else {   return  }
         
-        switch button.tag{
-            case 1: print("")
-            case 2: print("")
-            case 3: print("")
-        default: print("testicles")
-        }
+        viewController.screenType = selection
         
     }
     
