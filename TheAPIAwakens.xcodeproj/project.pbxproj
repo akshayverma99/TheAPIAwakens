@@ -16,6 +16,7 @@
 		4F17B999218EA07100B63229 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F17B998218EA07100B63229 /* DataStructures.swift */; };
 		4FDC36C12194F14600EDE6F0 /* UrlCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC36C02194F14600EDE6F0 /* UrlCreator.swift */; };
 		4FDC36C42194FB5800EDE6F0 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC36C32194FB5800EDE6F0 /* NetworkingManager.swift */; };
+		4FDC36C62196B77E00EDE6F0 /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC36C52196B77E00EDE6F0 /* DataStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		4F17B998218EA07100B63229 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
 		4FDC36C02194F14600EDE6F0 /* UrlCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCreator.swift; sourceTree = "<group>"; };
 		4FDC36C32194FB5800EDE6F0 /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
+		4FDC36C52196B77E00EDE6F0 /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				4F17B998218EA07100B63229 /* DataStructures.swift */,
 				4F17B997218E4DFB00B63229 /* ViewControllers */,
 				4FDC36C22194F8A200EDE6F0 /* Networking */,
+				4FDC36C52196B77E00EDE6F0 /* DataStorage.swift */,
 				4F17B987218B916800B63229 /* Main.storyboard */,
 				4F17B98A218B916E00B63229 /* Assets.xcassets */,
 				4F17B98C218B916E00B63229 /* LaunchScreen.storyboard */,
@@ -168,6 +171,7 @@
 				4F17B999218EA07100B63229 /* DataStructures.swift in Sources */,
 				4FDC36C42194FB5800EDE6F0 /* NetworkingManager.swift in Sources */,
 				4F17B996218D1D9500B63229 /* InfoViewController.swift in Sources */,
+				4FDC36C62196B77E00EDE6F0 /* DataStorage.swift in Sources */,
 				4F17B984218B916800B63229 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

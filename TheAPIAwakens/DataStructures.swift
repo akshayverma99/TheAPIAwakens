@@ -14,10 +14,6 @@ enum selection{
     case starships 
 }
 
-protocol database {
-    func getDatabaseType() -> databaseType
-}
-
 // JSON Objects
 
 struct Person: Codable{
@@ -31,7 +27,11 @@ struct Person: Codable{
     let homeworld: String
 }
 
-struct Vehicle: Codable{
+struct arrayOfPeople: Codable{
+    let results: [Person]
+}
+
+struct Starship: Codable{
     let name: String
     let manufacturer: String
     let costInCredits: String
@@ -40,7 +40,34 @@ struct Vehicle: Codable{
     let crew: String
 }
 
+struct arrayOfStarships: Codable{
+    let results: [Starship]
+}
+
+struct Vehicle: Codable{
+    let name: String
+    let manufacturer: String
+    let costInCredits: String
+    let length: String
+    let vehicleClass: String
+    let crew: String
+}
+
+struct arrayOfVehicles: Codable {
+    let results: [Vehicle]
+}
+
 typealias databaseType = selection
-typealias Starship = Vehicle
+
+enum NetworkingErrors: Error{
+    case noData
+    case failedNetworkingCall
+    case invalidURL
+}
+
+struct starwarsInfo{
+    let typeOfInfo: databaseType
+    let data: [AnyObject]
+}
 
 

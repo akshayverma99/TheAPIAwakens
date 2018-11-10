@@ -100,7 +100,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
     }
     
-    func updateLabels(with vehicle: Vehicle ){
+    func updateLabels(with vehicle: Starship ){
         nameTitle.text = vehicle.name
         infoLabel1.text = vehicle.manufacturer
         infoLabel2.text = vehicle.costInCredits
