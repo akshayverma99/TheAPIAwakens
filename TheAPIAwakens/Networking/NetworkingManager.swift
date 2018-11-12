@@ -36,7 +36,33 @@ class NetworkingManager{
                 if databaseType == .characters{
                     do{
                         let placeHolder = try decoder.decode(arrayOfPeople.self, from: data)
+                        var newArray: [Person] = []
+                            for person in placeHolder.results{
+                                if let url = URL(string: person.homeworld){
+                                    URLSession.shared.dataTask(with: url){ data,y,z in
+                                        guard let data = data else { completion(NetworkingErrors.invalidURL,nil); return }
+                                        do{
+                                            let tempPlanet = try decoder.decode(homeworld.self, from: data)
+                                            var tempPerson = person
+                                            tempPerson.homeworld = tempPlanet.name
+                                            print(tempPlanet.name)
+                                            newArray.append(tempPerson)
+
+                                        }catch{
+                                            completion(NetworkingErrors.invalidURL,nil)
+                                        }
+                                        
+                                        completion(nil,starwarsInfo(typeOfInfo: .characters, data: newArray as [AnyObject]))
+                                        
+                                    }.resume()
+                                }else{
+                                    completion(NetworkingErrors.invalidURL,nil)
+                                }
+                            }
+                        print(placeHolder.results)
                         completion(nil,starwarsInfo(typeOfInfo: .characters, data: placeHolder.results as [AnyObject]))
+                        
+
                     }catch{
                         completion(NetworkingErrors.noData,nil)
                     }
@@ -59,6 +85,10 @@ class NetworkingManager{
                 completion(NetworkingErrors.failedNetworkingCall,nil)
             }
         
+        }
+        
+        func convertUrlsToNames(array: [Person] ){
+            
         }
         
         

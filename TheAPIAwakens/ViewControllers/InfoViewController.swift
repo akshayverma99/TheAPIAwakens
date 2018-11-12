@@ -12,6 +12,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     let data: [String] = [""]
     var screenType = selection.characters
+    var networkingRequestMade = false
     
     @IBOutlet weak var USDButton: UIButton!
     @IBOutlet weak var CreditsButton: UIButton!
@@ -51,8 +52,9 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         updateTitle()
         updateHeadings()
         
-        // Updates the name title so it is the first object in the picker view
-        nameTitle.text = data[0]
+        
+        NetworkingManager(databaseType: screenType).sendNetworkingRequest(completionHandler: completionHandler)
+
         
     }
     
@@ -108,6 +110,15 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         infoLabel4.text = vehicle.starshipClass
         infoLabel5.text = vehicle.crew
     }
+    
+    func updateLabels(with vehicle: Vehicle ){
+        nameTitle.text = vehicle.name
+        infoLabel1.text = vehicle.manufacturer
+        infoLabel2.text = vehicle.costInCredits
+        infoLabel3.text = vehicle.length
+        infoLabel4.text = vehicle.vehicleClass
+        infoLabel5.text = vehicle.crew
+    }
 
     
     func updateLabels(with person: Person){
@@ -123,7 +134,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     //  MARK: - Picker Functions
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        nameTitle.text = data[row]
+        setLabels(for: row)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -131,11 +142,74 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return data.count
+        switch screenType {
+        case .characters: return DataStorage.characterStorage.count
+        case .starships: return DataStorage.starshipStorage.count
+        case .vehicles: return DataStorage.vehicleStorage.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return data[row]
+        switch screenType {
+        case .characters: return DataStorage.characterStorage[row].name
+        case .starships: return DataStorage.starshipStorage[row].name
+        case .vehicles: return DataStorage.vehicleStorage[row].name
+        }
+    }
+    
+    // Networking Functions
+    
+    
+    func completionHandler(error: Error?, starWarsInfo: starwarsInfo?){
+        if let error = error as? NetworkingErrors{
+            switch error{
+            case .failedNetworkingCall: print("1")
+            case .invalidURL: print("2")
+            case .noData: print("3")
+            }
+            
+        }
+        
+        if let placeHolder = starWarsInfo{
+            switch placeHolder.typeOfInfo{
+            case .characters:
+                if let placeHolder = placeHolder.data as? [Person]{
+                    DataStorage.characterStorage = placeHolder
+                }else{
+                    
+                }
+            case .starships:
+                if let placeHolder = placeHolder.data as? [Starship]{
+                    DataStorage.starshipStorage = placeHolder
+                }else{
+                    
+                }
+            case .vehicles:
+                if let placeHolder = placeHolder.data as? [Vehicle]{
+                    DataStorage.vehicleStorage = placeHolder
+                }else{
+                    
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.setLabels(for: 0)
+            self.picker.reloadAllComponents()
+        }
+    }
+    
+    // Label setting functions
+    
+    func setLabels(for index: Int){
+        switch screenType{
+        case .characters:
+            updateLabels(with: DataStorage.characterStorage[index])
+        case .starships:
+            updateLabels(with: DataStorage.starshipStorage[index])
+        case .vehicles:
+            updateLabels(with: DataStorage.vehicleStorage[index])
+        }
     }
     
 }

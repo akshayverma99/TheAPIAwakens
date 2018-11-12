@@ -24,11 +24,11 @@ struct Person: Codable{
     let hairColor: String
     
     // is a url
-    let homeworld: String
+    var homeworld: String
 }
 
 struct arrayOfPeople: Codable{
-    let results: [Person]
+    var results: [Person]
 }
 
 struct Starship: Codable{
@@ -68,6 +68,10 @@ enum NetworkingErrors: Error{
 struct starwarsInfo{
     let typeOfInfo: databaseType
     let data: [AnyObject]
+}
+
+struct homeworld: Codable{
+    let name: String
 }
 
 
