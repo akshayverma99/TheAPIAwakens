@@ -10,12 +10,20 @@ import UIKit
 
 class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource{
     
-    let data: [String] = [""]
     var screenType = selection.characters
-    var networkingRequestMade = false
+    
+    // Are given values as soon as the scene is loaded
+    var currentStarship: Starship!
+    var currentVehicle: Vehicle!
+    var currentPerson: Person!
     
     @IBOutlet weak var USDButton: UIButton!
     @IBOutlet weak var CreditsButton: UIButton!
+    
+    @IBOutlet weak var EnglishButton: UIButton!
+    @IBOutlet weak var MetricButton: UIButton!
+    
+    @IBOutlet weak var ConversionButton: UIButton!
     
     @IBOutlet weak var nameTitle: UILabel!
     
@@ -54,8 +62,13 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         
         
         NetworkingManager(databaseType: screenType).sendNetworkingRequest(completionHandler: completionHandler)
-
         
+        CreditsButton.isEnabled = false
+        USDButton.isEnabled = true
+        
+        EnglishButton.isEnabled = true
+        MetricButton.isEnabled = false
+
     }
     
     
@@ -93,12 +106,14 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             heading3.text = "Height"
             heading4.text = "Eyes"
             heading5.text = "Hair"
+            hideCurrencyButtons()
         }else{
             heading1.text = "Make"
             heading2.text = "Cost"
             heading3.text = "Length"
             heading4.text = "Class"
             heading5.text = "Crew"
+            showCurrencyButtons()
         }
     }
     
@@ -134,6 +149,8 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     //  MARK: - Picker Functions
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        CreditsButton.isEnabled = false
+        USDButton.isEnabled = true
         setLabels(for: row)
     }
     
@@ -143,29 +160,31 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch screenType {
-        case .characters: return DataStorage.characterStorage.count
-        case .starships: return DataStorage.starshipStorage.count
-        case .vehicles: return DataStorage.vehicleStorage.count
+        case .characters: return DataStorage.characterStorage.results.count
+        case .starships: return DataStorage.starshipStorage.results.count
+        case .vehicles: return DataStorage.vehicleStorage.results.count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch screenType {
-        case .characters: return DataStorage.characterStorage[row].name
-        case .starships: return DataStorage.starshipStorage[row].name
-        case .vehicles: return DataStorage.vehicleStorage[row].name
+        case .characters: return DataStorage.characterStorage.results[row].name
+        case .starships: return DataStorage.starshipStorage.results[row].name
+        case .vehicles: return DataStorage.vehicleStorage.results[row].name
         }
     }
     
-    // Networking Functions
+    // MARK: Networking Functions
     
     
     func completionHandler(error: Error?, starWarsInfo: starwarsInfo?){
         if let error = error as? NetworkingErrors{
             switch error{
-            case .failedNetworkingCall: print("1")
-            case .invalidURL: print("2")
-            case .noData: print("3")
+                
+            // FIXME: Add modal popup returning to homescreen for each of these displaying the error
+            case .failedNetworkingCall: presentPopUpError(message: "No Internet Connection")
+            case .invalidURL: presentPopUpError(message: "Invalid URL Error")
+            case .noData: presentPopUpError(message: "No Data")
             }
             
         }
@@ -174,19 +193,19 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             switch placeHolder.typeOfInfo{
             case .characters:
                 if let placeHolder = placeHolder.data as? [Person]{
-                    DataStorage.characterStorage = placeHolder
+                    DataStorage.characterStorage.results = placeHolder
                 }else{
                     
                 }
             case .starships:
                 if let placeHolder = placeHolder.data as? [Starship]{
-                    DataStorage.starshipStorage = placeHolder
+                    DataStorage.starshipStorage.results = placeHolder
                 }else{
                     
                 }
             case .vehicles:
                 if let placeHolder = placeHolder.data as? [Vehicle]{
-                    DataStorage.vehicleStorage = placeHolder
+                    DataStorage.vehicleStorage.results = placeHolder
                 }else{
                     
                 }
@@ -199,17 +218,123 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         }
     }
     
-    // Label setting functions
+    // MARK: Label setting functions
     
     func setLabels(for index: Int){
         switch screenType{
         case .characters:
-            updateLabels(with: DataStorage.characterStorage[index])
+            updateLabels(with: DataStorage.characterStorage.results[index])
+            currentPerson = DataStorage.characterStorage.results[index]
+            hideConversionButton()
+            
+            guard let smallest = DataStorage.characterStorage.smallest else { return }
+            guard let largest = DataStorage.characterStorage.largest else { return }
+            
+            smallestLabel.text = smallest.name
+            largestLabel.text = largest.name
+            
         case .starships:
-            updateLabels(with: DataStorage.starshipStorage[index])
+            updateLabels(with: DataStorage.starshipStorage.results[index])
+            currentStarship = DataStorage.starshipStorage.results[index]
+            showConversionButton()
+            
+            guard let smallest = DataStorage.starshipStorage.smallest else { return }
+            guard let largest = DataStorage.starshipStorage.largest else { return }
+            
+            smallestLabel.text = smallest.name
+            largestLabel.text = largest.name
+            
         case .vehicles:
-            updateLabels(with: DataStorage.vehicleStorage[index])
+            updateLabels(with: DataStorage.vehicleStorage.results[index])
+            currentVehicle = DataStorage.vehicleStorage.results[index]
+            showConversionButton()
+            
+            guard let smallest = DataStorage.vehicleStorage.smallest else { return }
+            guard let largest = DataStorage.vehicleStorage.largest else { return }
+            
+            smallestLabel.text = smallest.name
+            largestLabel.text = largest.name
+            
         }
+    }
+    
+    func hideCurrencyButtons(){
+        USDButton.isHidden = true
+        CreditsButton.isHidden = true
+    }
+    
+    func showCurrencyButtons(){
+        USDButton.isHidden = false
+        CreditsButton.isHidden = false
+    }
+    
+    func hideConversionButton(){
+        ConversionButton.isHidden = true
+    }
+    
+    func showConversionButton(){
+        ConversionButton.isHidden = false
+    }
+    
+    // MARK: Button Presses
+    
+    @IBAction func usdPressed(_ sender: UIButton) {
+        if screenType == .starships{
+            infoLabel2.text = currentStarship.costInUSD
+        }else if screenType == .vehicles{
+            infoLabel2.text = currentVehicle.costInUSD
+        }
+        
+        CreditsButton.isEnabled = true
+        USDButton.isEnabled = false
+    }
+    
+    @IBAction func creditsPressed(_ sender: UIButton) {
+        if screenType == .starships{
+            infoLabel2.text = currentStarship.costInCredits
+        }else if screenType == .vehicles{
+            infoLabel2.text = currentVehicle.costInCredits
+        }
+        
+        CreditsButton.isEnabled = false
+        USDButton.isEnabled = true
+    }
+    
+    @IBAction func englishButtonPressed(_ sender: UIButton) {
+        switch screenType{
+        case .characters: infoLabel3.text = currentPerson.heightInInches
+        case .starships: infoLabel3.text = currentStarship.lengthInInches
+        case .vehicles: infoLabel3.text = currentVehicle.lengthInInches
+        }
+        
+        EnglishButton.isEnabled = false
+        MetricButton.isEnabled = true
+        
+    }
+    @IBAction func metricButtonPressed(_ sender: UIButton) {
+        switch screenType{
+        case .characters: infoLabel3.text = currentPerson.height
+        case .starships: infoLabel3.text = currentStarship.length
+        case .vehicles: infoLabel3.text = currentVehicle.length
+        }
+        
+        EnglishButton.isEnabled = true
+        MetricButton.isEnabled = false
+    }
+    
+    // Mark ModaL Pop ups
+    
+    func presentPopUpError(message: String){
+        let popup = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default){ action in
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        popup.addAction(action)
+        
+        self.present(popup, animated: true, completion: nil)
+        
     }
     
 }
