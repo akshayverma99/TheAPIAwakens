@@ -12,8 +12,11 @@ class ConversionViewController: UIViewController {
     
     @IBOutlet weak var ErrorLabel: UILabel!
     
+    
+    // Called everytime the number in the conversion box is changed
+    // and saves it to be used in the calculations, also displays an
+    // error if the user inputs 0, a negative number, or other characters
     @IBAction func conversionNumChanged(_ sender: UITextField) {
-        
         guard let text = sender.text else { return }
         let conversionNum: Double? = Double(text)
         
@@ -23,8 +26,6 @@ class ConversionViewController: UIViewController {
         }else{
             ErrorLabel.isHidden = false
         }
-        
-        
     }
     
     override func viewDidLoad() {

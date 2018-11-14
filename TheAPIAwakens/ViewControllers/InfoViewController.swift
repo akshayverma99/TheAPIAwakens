@@ -57,15 +57,16 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         
+        // Updates the titles and heading depending on what type of info is going to be presented
         updateTitle()
         updateHeadings()
         
-        
+        // Makes the appropriate networking request
         NetworkingManager(databaseType: screenType).sendNetworkingRequest(completionHandler: completionHandler)
         
+        // Sets up the conversion buttons to their correct default states
         CreditsButton.isEnabled = false
         USDButton.isEnabled = true
-        
         EnglishButton.isEnabled = true
         MetricButton.isEnabled = false
 
@@ -180,8 +181,6 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func completionHandler(error: Error?, starWarsInfo: starwarsInfo?){
         if let error = error as? NetworkingErrors{
             switch error{
-                
-            // FIXME: Add modal popup returning to homescreen for each of these displaying the error
             case .failedNetworkingCall: presentPopUpError(message: "No Internet Connection")
             case .invalidURL: presentPopUpError(message: "Invalid URL Error")
             case .noData: presentPopUpError(message: "No Data")
@@ -212,6 +211,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             }
         }
         
+        // Sets up the labels for the first object in the picker view
         DispatchQueue.main.async {
             self.setLabels(for: 0)
             self.picker.reloadAllComponents()
@@ -223,8 +223,10 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     func setLabels(for index: Int){
         switch screenType{
         case .characters:
-            updateLabels(with: DataStorage.characterStorage.results[index])
-            currentPerson = DataStorage.characterStorage.results[index]
+            if DataStorage.characterStorage.results.count > 0{
+                updateLabels(with: DataStorage.characterStorage.results[index])
+                currentPerson = DataStorage.characterStorage.results[index]
+            }
             hideConversionButton()
             
             guard let smallest = DataStorage.characterStorage.smallest else { return }
@@ -234,8 +236,10 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             largestLabel.text = largest.name
             
         case .starships:
-            updateLabels(with: DataStorage.starshipStorage.results[index])
-            currentStarship = DataStorage.starshipStorage.results[index]
+            if DataStorage.characterStorage.results.count > 0{
+                updateLabels(with: DataStorage.starshipStorage.results[index])
+                currentStarship = DataStorage.starshipStorage.results[index]
+            }
             showConversionButton()
             
             guard let smallest = DataStorage.starshipStorage.smallest else { return }
@@ -245,8 +249,10 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             largestLabel.text = largest.name
             
         case .vehicles:
-            updateLabels(with: DataStorage.vehicleStorage.results[index])
-            currentVehicle = DataStorage.vehicleStorage.results[index]
+            if DataStorage.characterStorage.results.count > 0{
+                updateLabels(with: DataStorage.vehicleStorage.results[index])
+                currentVehicle = DataStorage.vehicleStorage.results[index]
+            }
             showConversionButton()
             
             guard let smallest = DataStorage.vehicleStorage.smallest else { return }
@@ -328,7 +334,7 @@ class InfoViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         let popup = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default){ action in
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         
         popup.addAction(action)

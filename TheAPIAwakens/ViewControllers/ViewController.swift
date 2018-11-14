@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
+    // Changes the current selection type to whatever button was selected
     @IBAction func segue(_ sender: UIButton) {
         switch sender.tag{
         case 1: currentSelection = .characters
@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         performSegue(withIdentifier: "shift", sender: nil)
     }
     
+    // Adds the correct type to the next screen
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let selection = currentSelection else {  return  }
         guard let viewController = segue.destination as? InfoViewController else {   return  }

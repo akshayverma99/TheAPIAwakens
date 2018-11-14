@@ -39,7 +39,7 @@ class NetworkingManager{
                         var newArray: [Person] = []
                             for person in placeHolder.results{
                                 if let url = URL(string: person.homeworld){
-                                    URLSession.shared.dataTask(with: url){ data,y,z in
+                                    URLSession.shared.dataTask(with: url){ data,response,error in
                                         guard let data = data else { completion(NetworkingErrors.invalidURL,nil); return }
                                         do{
                                             let tempPlanet = try decoder.decode(homeworld.self, from: data)
@@ -86,13 +86,8 @@ class NetworkingManager{
             }
         
         }
-        
-        func convertUrlsToNames(array: [Person] ){
-            
-        }
-        
-        
-        
+
+
         switch databaseType {
         case .characters:
             if let tempUrl = UrlCreator.characterURL{

@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Handles all the data storage in the app
 struct DataStorage{
     static var vehicleStorage: arrayOfVehicles = arrayOfVehicles(results: [])
     static var characterStorage: arrayOfPeople = arrayOfPeople(results: [])
