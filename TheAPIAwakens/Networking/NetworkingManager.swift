@@ -45,7 +45,6 @@ class NetworkingManager{
                                             let tempPlanet = try decoder.decode(homeworld.self, from: data)
                                             var tempPerson = person
                                             tempPerson.homeworld = tempPlanet.name
-                                            print(tempPlanet.name)
                                             newArray.append(tempPerson)
 
                                         }catch{
@@ -59,7 +58,6 @@ class NetworkingManager{
                                     completion(NetworkingErrors.invalidURL,nil)
                                 }
                             }
-                        print(placeHolder.results)
                         completion(nil,starwarsInfo(typeOfInfo: .characters, data: placeHolder.results as [AnyObject]))
                         
 
